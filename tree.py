@@ -18,8 +18,9 @@ class Node:
         return self.data > node.data
 
     def __repr__(self):
-        return f"(value: {self.data}, left: {self.left}, right: {self.right})"
-
+        left_ch = None if self.left == None else (hex(id(self.left)), self.left.data)
+        right_ch = None if self.right == None else (hex(id(self.right)), self.right.data)
+        return f"Node {hex(id(self)), self.data}: left -> {left_ch}, right -> {right_ch}"
 
 class BinaryTree:
     def __init__(self, nodes=[]):
