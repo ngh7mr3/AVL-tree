@@ -52,5 +52,13 @@ class BinaryTree:
             new_node.parent.right = new_node
 
     def find(self, key):
-        pass
+        current_node = self.__root
+
+        while current_node != None and current_node.data != key:
+            if key < current_node.data:
+                current_node = current_node.left
+            else:
+                current_node = current_node.right
+
+        return current_node
 
