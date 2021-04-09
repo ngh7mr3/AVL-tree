@@ -44,11 +44,8 @@ class TreeNode:
 
 
 class BinaryTree:
-    def __init__(self, nodes=[], balancing=True):
+    def __init__(self):
         self.__root = None
-        self.__balancing = balancing
-        for node in nodes:
-            self.add(node)
 
     @property
     def root(self):
@@ -135,8 +132,6 @@ class BinaryTree:
             new_node.parent.right = new_node
 
         # Fix all the heights and balance subtrees
-        if not self.__balancing:
-            return
         current_node = new_node.parent
         while current_node:
             self.__balance_subtree(current_node)
