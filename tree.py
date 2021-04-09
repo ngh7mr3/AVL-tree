@@ -40,7 +40,7 @@ class TreeNode:
     def __repr__(self):
         left = self.left.data if self.left else None
         right = self.right.data if self.right else None
-        return f"Node ({hex(id(self))}, {self.data}) balance={self.balance} left->{left} right->{right}"
+        return  f"Node({self.data}) balance={self.balance} L->{left} R->{right}"
 
 
 class BinaryTree:
@@ -64,7 +64,7 @@ class BinaryTree:
         if node_a.right:
             node_a.right.parent = node_a
 
-        if node_b.parent != None:
+        if node_b.parent is not None:
             if node_b < node_b.parent:
                 node_b.parent.left = node_b
             else:
@@ -88,7 +88,7 @@ class BinaryTree:
         if node_a.left:
             node_a.left.parent = node_a
 
-        if node_b.parent != None:
+        if node_b.parent is not None:
             if node_b < node_b.parent:
                 node_b.parent.left = node_b
             else:
@@ -140,13 +140,13 @@ class BinaryTree:
     def find(self, key):
         current_node = self.__root
 
-        while current_node != None and current_node.data != key:
+        while current_node and current_node.data != key:
             if key < current_node.data:
                 current_node = current_node.left
             else:
                 current_node = current_node.right
 
-        if current_node == None:
+        if current_node is None:
             raise KeyError(f"Could not find {key} in a tree")
 
         return current_node
