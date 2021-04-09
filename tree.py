@@ -46,10 +46,20 @@ class TreeNode:
 class BinaryTree:
     def __init__(self):
         self.__root = None
+        self.__max = None
+        self.__min = None
 
     @property
     def root(self):
         return self.__root
+
+    @property
+    def max_leaf(self):
+        return self.find(self.__max)
+
+    @property
+    def min_leaf(self):
+        return self.find(self.__min)
 
     def __rotate_left(self, node):
         """
@@ -110,8 +120,14 @@ class BinaryTree:
                 self.__rotate_right(tree_root.right)
             self.__rotate_left(tree_root)
 
+    def __update_min_max_values(self, value):
+        self.__min = min(self.__min, value) if self.__min else value
+        self.__max = max(self.__max, value) if self.__max else value
+
     def add(self, key):
         new_node = TreeNode(key)
+        self.__update_min_max_values(key)
+
         if not self.__root:
             self.__root = new_node
             return
