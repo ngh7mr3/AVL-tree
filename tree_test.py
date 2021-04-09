@@ -72,3 +72,13 @@ class TestBalancedBinaryTree(TestCase):
         self.__test_tree_root_height(self.tree.root, array_size)
         self.__dfs(self.tree.root, self.__test_node_balance)
 
+    def test_tree_iterators(self):
+        test_arr = np.arange(1, 10000)
+        self.__build_tree(test_arr)
+
+        for num, node in zip(test_arr, self.tree):
+            self.assertEqual(node.data, num)
+
+        for num, node in zip(test_arr[::-1], self.tree[::-1]):
+            self.assertEqual(node.data, num)
+

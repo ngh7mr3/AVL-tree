@@ -51,6 +51,28 @@ class BinaryTree:
     def root(self):
         return self.__root
 
+    def __ascending_iter(self, node):
+        if node:
+            yield from self.__ascending_iter(node.left)
+            yield node
+            yield from self.__ascending_iter(node.right)
+
+    def __descending_iter(self, node):
+        if node:
+            yield from self.__descending_iter(node.right)
+            yield node
+            yield from self.__descending_iter(node.left)
+
+    def __iter__(self):
+        return self.__ascending_iter(self.__root)
+
+    def __getitem__(self, user_slice):
+        if user_slice == slice(None, None, -1):
+            # Only handling case where tree is called with [::-1]
+            return self.__descending_iter(self.__root)
+        else:
+            raise ValueError
+
     def __rotate_left(self, node):
         """
         Counter-clockwise rotation
