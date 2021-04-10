@@ -9,12 +9,6 @@ class TestBalancedBinaryTree(TestCase):
         for node in nodes:
             self.tree.add(node)
 
-    def __dfs(self, node, function):
-        if node:
-            function(node)
-            self.__dfs(node.left, function)
-            self.__dfs(node.right, function)
-
     def __test_node_balance(self, node):
         self.assertTrue(-1 <= node.balance <= 1)
 
@@ -49,29 +43,6 @@ class TestBalancedBinaryTree(TestCase):
         self.assertEqual(self.tree.root.lst_height, 1)
         self.assertEqual(self.tree.root.rst_height, 1)
 
-    def test_balancing_on_equal_nodes(self):
-        test_arr = [1, 2, 2, 2, 2]
-        self.__build_tree(test_arr)
-
-        self.__dfs(self.tree.root, self.__test_node_balance)
-
-    def test_balancing_on_sorted_array(self):
-        array_size = 10000
-        test_arr = np.arange(1, array_size+1)
-        self.__build_tree(test_arr)
-
-        self.__test_tree_root_height(self.tree.root, array_size)
-        self.__dfs(self.tree.root, self.__test_node_balance)
-
-    def test_balancing_on_shuffled_array(self):
-        array_size = 10000
-        test_arr = np.arange(1, array_size+1)
-        np.random.shuffle(test_arr)
-        self.__build_tree(test_arr)
-
-        self.__test_tree_root_height(self.tree.root, array_size)
-        self.__dfs(self.tree.root, self.__test_node_balance)
-
     def test_tree_iterators(self):
         test_arr = np.arange(1, 10000)
         self.__build_tree(test_arr)
@@ -81,4 +52,30 @@ class TestBalancedBinaryTree(TestCase):
 
         for num, node in zip(test_arr[::-1], self.tree[::-1]):
             self.assertEqual(node.data, num)
+
+    def test_balancing_on_equal_nodes(self):
+        test_arr = [1, 2, 2, 2, 2]
+        self.__build_tree(test_arr)
+
+        for node in self.tree:
+            self.__test_node_balance(node)
+
+    def test_balancing_on_sorted_array(self):
+        array_size = 10000
+        test_arr = np.arange(1, array_size+1)
+        self.__build_tree(test_arr)
+
+        self.__test_tree_root_height(self.tree.root, array_size)
+        for node in self.tree:
+            self.__test_node_balance(node)
+
+    def test_balancing_on_shuffled_array(self):
+        array_size = 10000
+        test_arr = np.arange(1, array_size+1)
+        np.random.shuffle(test_arr)
+        self.__build_tree(test_arr)
+
+        self.__test_tree_root_height(self.tree.root, array_size)
+        for node in self.tree:
+            self.__test_node_balance(node)
 
