@@ -9,9 +9,6 @@ class TestBalancedBinaryTree(TestCase):
         for node in nodes:
             self.tree.add(node)
 
-    def __test_node_balance(self, node):
-        self.assertTrue(-1 <= node.balance <= 1)
-
     def __test_tree_root_height(self, root, nodes_number):
         # Wiki formula
         self.assertTrue(root.height <= ceil(1.45 * log(nodes_number+2, 2)))
@@ -58,7 +55,7 @@ class TestBalancedBinaryTree(TestCase):
         self.__build_tree(test_arr)
 
         for node in self.tree:
-            self.__test_node_balance(node)
+            self.assertTrue(-2 < node.balance < 2)
 
     def test_balancing_on_sorted_array(self):
         array_size = 10000
@@ -67,7 +64,7 @@ class TestBalancedBinaryTree(TestCase):
 
         self.__test_tree_root_height(self.tree.root, array_size)
         for node in self.tree:
-            self.__test_node_balance(node)
+            self.assertTrue(-2 < node.balance < 2)
 
     def test_balancing_on_shuffled_array(self):
         array_size = 10000
@@ -77,5 +74,5 @@ class TestBalancedBinaryTree(TestCase):
 
         self.__test_tree_root_height(self.tree.root, array_size)
         for node in self.tree:
-            self.__test_node_balance(node)
+            self.assertTrue(-2 < node.balance < 2)
 
