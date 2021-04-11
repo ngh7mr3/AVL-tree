@@ -1,5 +1,5 @@
 class TreeNode:
-    __slots__ = '__data', '__height', 'parent', 'left', 'right'
+    __slots__ = '__data', '__height', 'left', 'right'
 
     def __init__(self, data):
         self.__data = data
