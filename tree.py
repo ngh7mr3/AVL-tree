@@ -39,7 +39,7 @@ class TreeNode:
     def __repr__(self):
         left = self.left.data if self.left else None
         right = self.right.data if self.right else None
-        return  f"Node({self.data}) balance={self.balance} L->{left} R->{right}"
+        return f"Node({self.data}) balance={self.balance} L->{left} R->{right}"
 
 
 class BinaryTree:
@@ -87,7 +87,7 @@ class BinaryTree:
         assert node.balance < 0 and node.right
 
         node_a, node_b = node, node.right
-        node_a.right, node_b.left  = node_b.left, node_a
+        node_a.right, node_b.left = node_b.left, node_a
 
         node_a.update_height()
         node_b.update_height()
@@ -100,7 +100,7 @@ class BinaryTree:
         assert node.balance > 0 and node.left
 
         node_a, node_b = node, node.left
-        node_a.left, node_b.right  = node_b.right, node_a
+        node_a.left, node_b.right = node_b.right, node_a
 
         node_a.update_height()
         node_b.update_height()
