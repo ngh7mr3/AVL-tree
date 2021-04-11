@@ -37,7 +37,7 @@ Here's the time table for tree creation and node searching
 
 | Methods \ Num. of elements | 10 | 10**2 | 10**3 | 10**4| 10**5 |
 | :---: | --- | --- | ---| --- | --- |
-| `add` | 63.4 µs ± 2.25 µs | 1.23 ms ± 5.06 µs | 18.1 ms ± 47.9 µs | 240 ms ± 911 µs | 3 s ± 16.3 ms |
+| Tree creation with `add` | 63.4 µs ± 2.25 µs | 1.23 ms ± 5.06 µs | 18.1 ms ± 47.9 µs | 240 ms ± 911 µs | 3 s ± 16.3 ms |
 | `find` | 4.71 µs ± 16 ns | 6.98 µs ± 53.7 ns | 9.65 µs ± 58.4 ns | 13 µs ± 85.5 ns | 16.9 µs ± 366 ns |
 
 All performance measured with `ipython` and `%%timeit`
