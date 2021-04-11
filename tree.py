@@ -4,7 +4,6 @@ class TreeNode:
     def __init__(self, data):
         self.__data = data
         self.__height = 0
-        self.parent = None
         self.left = None
         self.right = None
 
@@ -63,6 +62,14 @@ class BinaryTree:
             yield node
             yield from self.__descending_iter(node.left)
 
+    def __key_iter(self, node, key):
+        if node:
+            yield node
+            if key < node.data:
+                yield from self.__key_iter(node.left, key)
+            else:
+                yield from self.__key_iter(node.right, key)
+
     def __iter__(self):
         return self.__ascending_iter(self.__root)
 
@@ -80,22 +87,11 @@ class BinaryTree:
         assert node.balance < 0 and node.right
 
         node_a, node_b = node, node.right
-        node_a.parent, node_b.parent = node_b, node_a.parent
         node_a.right, node_b.left  = node_b.left, node_a
-
-        if node_a.right:
-            node_a.right.parent = node_a
-
-        if node_b.parent is not None:
-            if node_b < node_b.parent:
-                node_b.parent.left = node_b
-            else:
-                node_b.parent.right = node_b
-        else:
-            self.__root = node_b
 
         node_a.update_height()
         node_b.update_height()
+        return node_b
 
     def __rotate_right(self, node):
         """
@@ -104,73 +100,48 @@ class BinaryTree:
         assert node.balance > 0 and node.left
 
         node_a, node_b = node, node.left
-        node_a.parent, node_b.parent = node_b, node_a.parent
         node_a.left, node_b.right  = node_b.right, node_a
-
-        if node_a.left:
-            node_a.left.parent = node_a
-
-        if node_b.parent is not None:
-            if node_b < node_b.parent:
-                node_b.parent.left = node_b
-            else:
-                node_b.parent.right = node_b
-        else:
-            self.__root = node_b
 
         node_a.update_height()
         node_b.update_height()
+        return node_b
 
     def __balance_subtree(self, tree_root):
         tree_root.update_height()
+
         if tree_root.balance == 2:
             if tree_root.left.balance == -1:
-                self.__rotate_left(tree_root.left)
-            self.__rotate_right(tree_root)
+                tree_root.left = self.__rotate_left(tree_root.left)
+            return self.__rotate_right(tree_root)
         elif tree_root.balance == -2:
             if tree_root.right.balance == 1:
-                self.__rotate_right(tree_root.right)
-            self.__rotate_left(tree_root)
+                tree_root.right = self.__rotate_right(tree_root.right)
+            return self.__rotate_left(tree_root)
+
+        return tree_root
+
+    def __add(self, node, key):
+        if node:
+            if key < node.data:
+                node.left = self.__add(node.left, key)
+            else:
+                node.right = self.__add(node.right, key)
+            return self.__balance_subtree(node)
+        else:
+            return TreeNode(key)
 
     def add(self, key):
-        new_node = TreeNode(key)
-
         if not self.__root:
-            self.__root = new_node
+            self.__root = TreeNode(key)
             return
 
-        # Find the space for a leaf
-        current_node = self.__root
-        while current_node:
-            new_node.parent = current_node
-            if current_node > new_node:
-                current_node = current_node.left
-            else:
-                current_node = current_node.right
-
-        # Set the leaf under its parent
-        if new_node < new_node.parent:
-            new_node.parent.left = new_node
-        else:
-            new_node.parent.right = new_node
-
-        # Fix all the heights and balance subtrees
-        current_node = new_node.parent
-        while current_node:
-            self.__balance_subtree(current_node)
-            current_node = current_node.parent
+        self.__root = self.__add(self.__root, key)
 
     def find(self, key):
-        current_node = self.__root
+        key_iter = self.__key_iter(self.root, key)
+        for node in key_iter:
+            if node.data == key:
+                return node
 
-        while current_node and current_node.data != key:
-            if key < current_node.data:
-                current_node = current_node.left
-            else:
-                current_node = current_node.right
-
-        if current_node is None:
-            raise KeyError(f"Could not find {key} in a tree")
-
-        return current_node
+        raise KeyError(f"Could not find {key} in a tree")
 
